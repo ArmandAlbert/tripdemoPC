@@ -27,37 +27,38 @@
 
 <body>
 
-<div id="app">
-<!--引入头部-->
-<div id="header"></div>
-    <section id="login_wrap">
-        <div class="fullscreen-bg" style="background: url(images/login_bg.png);height: 532px;">
+    <div id="app">
+        <!--引入头部-->
+        <div id="header"></div>
+        <section id="login_wrap">
+            <div class="fullscreen-bg" style="background: url(images/login_bg.png);height: 532px;">
 
-        </div>
-        <div class="login-box">
-            <div class="title">
-                <!--<img src="images/login_logo.png" alt="">-->
-                <span>欢迎登录去哪儿旅游账户</span>
             </div>
-            <div  class="login_inner">
-                <!--登录错误提示消息-->
-                <div v-if="showmsg"id="errorMsg" class="alert alert-danger" >{{msg}}</div>
-                <form id="loginForm" action="" method="post" accept-charset="utf-8">
-                    <input type="hidden" name="action" value="login"/>
-                    <input name="username" type="text" placeholder="请输入账号" autocomplete="off" v-model="username">
-                    <input name="password" type="password" placeholder="请输入密码" autocomplete="off" v-model="password">
-                    <div class="submit_btn">
-                        <input class="title" type="button"value="登录" @click="startLogin">
-                        <!--<button class="title"  @click="userLogin">登录</button>-->
-                    </div>
-                </form>
-                <div class="reg">没有账户？<a href="register.html">立即注册</a></div>
+            <div class="login-box">
+                <div class="title">
+                    <!--<img src="images/login_logo.png" alt="">-->
+                    <span>欢迎登录去哪儿旅游账户</span>
+                </div>
+                <div class="login_inner">
+                    <!--登录错误提示消息-->
+                    <div v-if="showmsg" id="errorMsg" class="alert alert-danger">{{msg}}</div>
+                    <form id="loginForm" action="" method="post" accept-charset="utf-8">
+                        <input type="hidden" name="action" value="login" />
+                        <input name="username" type="text" placeholder="请输入账号" autocomplete="off" v-model="username">
+                        <input name="password" type="password" placeholder="请输入密码" autocomplete="off"
+                            v-model="password">
+                        <div class="submit_btn">
+                            <input class="title" type="button" value="登录" @click="startLogin">
+                            <!--<button class="title"  @click="userLogin">登录</button>-->
+                        </div>
+                    </form>
+                    <div class="reg">没有账户？<a href="register.html">立即注册</a></div>
+                </div>
             </div>
-        </div>
-    </section>
-    <!--引入尾部-->
-    <div id="footer"></div>
-</div>
+        </section>
+        <!--引入尾部-->
+        <div id="footer"></div>
+    </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -68,59 +69,58 @@
 
 <script>
     let vm = new Vue({
-        el:"#app",
-        data:{
-            username:'',
-            password:'',
-            showmsg:false,
-            msg:''
+        el: "#app",
+        data: {
+            username: '',
+            password: '',
+            showmsg: false,
+            msg: ''
         },
-        created(){
-            if(localStorage.getItem("username")!=null){
-                this.showmsg=true;
-                this.msg="您已登录，请勿重复登录";
+        created() {
+            if (localStorage.getItem("username") != null) {
+                this.showmsg = true;
+                this.msg = "您已登录，请勿重复登录";
             }
         },
-        methods:{
-            startLogin:function(){
-            this.showmsg=true;
-            if(localStorage.getItem(""))
-            {
-                this.msg="请勿重复登录";
-                return;
-            }
-            this.userLogin();
+        methods: {
+            startLogin: function () {
+                this.showmsg = true;
+                if (localStorage.getItem("")) {
+                    this.msg = "请勿重复登录";
+                    return;
+                }
+                this.userLogin();
             },
 
-            userLogin:function (){
+            userLogin: function () {
                 //console.log(this.username+" "+this.password);//成功了应该发送申请
                 let _this = this;
                 let params = new URLSearchParams();
-                params.append('identify',this.username);
-                params.append('password',this.password);
+                params.append('identify', this.username);
+                params.append('password', this.password);
                 axios
-                    .post(window.domain+'/users/auth',params)
+                    .post(window.domain + '/users/auth', params)
                     .then(function (response) {
                         console.log(response.data);
-                        if(response.data.data===""){
-                            _this.msg="账户登录失败";
+                        if (response.data.data === "") {
+                            _this.msg = "账户登录失败";
                             console.log("登陆失败");
-                        }else{
+                        } else {
                             localStorage.setItem("userId", response.data.data.id);
                             localStorage.setItem("token", response.data.data.token);
-                            _this.msg="登录成功";
+                            _this.msg = "登录成功,1秒后自动跳转...";
                             console.log(response.data.data.id);
                             axios
-                                .get(window.domain+'/users/'+response.data.data.id)
+                                .get(window.domain + '/users/' + response.data.data.id)
                                 .then(function (response) {
                                     console.log(response);
-                                    _this.username=response.data.data.username;
-                                    localStorage.setItem("username",_this.username);
-                                    window.setTimeout("window.location='index.html'",2000);
+                                    // _this.username = response.data.data.username;
+                                    localStorage.setItem("username", response.data.data.username);
+                                    window.setTimeout("window.location='index.html'", 1200);
                                 })
-                                .catch(function (error){
+                                .catch(function (error) {
                                     console.log(error);
-                                })                            
+                                })
                         }
                         //console.log(localStorage.getItem("userId")+ " " + localStorage.getItem("token"));
                     })
@@ -136,8 +136,9 @@
     })
 </script>
 <style>
-    .title{
+    .title {
         padding-bottom: 20px;
     }
 </style>
+
 </html>

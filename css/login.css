@@ -50,7 +50,7 @@
 .login_inner input {
     display: inline-block;
     width: 246px;
-    height: 26px;
+    height: 50px;
     border: 1px solid #d8d8d8;   
     font-size: 14px;
     color: #666;
@@ -61,6 +61,7 @@
     transition: box-shadow 0.25s linear 0s;
     -webkit-transition: box-shadow 0.25s linear 0s;
     margin-bottom: 17px;
+    cursor: pointer;
 }
 .verify input {
     width: 95px;
@@ -71,7 +72,7 @@
 
 .submit_btn button {
     width: 120px;
-    height: 40px;
+    height: 80px;
     border: none;
     background-color: #ffa800;   
     text-align: center;
@@ -91,7 +92,7 @@
     margin: 7px 5px 0 54px;
 }
 .submit_btn  span {
-    line-height: 35px;
+    line-height: 60px;
 }
 
 .reg {
