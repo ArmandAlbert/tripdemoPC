@@ -151,17 +151,33 @@
         }
     </script>
 </body>
-<script>
+<script type="module">
     let vm = new Vue({
         el: "#app",
         data: {
-            item: "",
-            all_img_list: "",
+            item: "",//当前订单
+            all_img_list: "",//订单列表
+            isFavor: 0,
         },
         created: function () {
             let index = window.localStorage.getItem("order_index");
             this.item = JSON.parse(window.localStorage.getItem("all_img_header"))[index];
             console.log(this.item);
+            let self = this;
+            //获取收藏状态
+            this.$http.jsonp('http://tripdemo.12138.site//items/hot', {       // 还可以直接把参数拼接在url后边
+                header: {
+                    "token": window.localStorage.getItem("token"),
+                },
+                params: {},
+                jsonp: "handelCallback"
+            }).then(function (res) {
+                console.log(res.data);
+                self.isFavor = res.data.data['item'] == item['id'];
+                console.log(self.isFavor);
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         methods: {
 
