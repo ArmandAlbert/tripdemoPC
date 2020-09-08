@@ -30,10 +30,17 @@
 
 <body>
     <style>
-        /* img {
-            width: 284px;
-            height: 166px;
-        } */
+        .mid-hot-img {
+            width: 460px;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .mid-all-img {
+            width: 460px;
+            height: 130px;
+            overflow: hidden;
+        }
     </style>
     <script>
         $("#header").load("header.html");
@@ -102,54 +109,17 @@
                     <!-- Tab panes -->
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="popularity">
-                            <div class="row" v-for="(img,index) in hot_img">
-                                <div class="col-md-3">
-                                    <a href="javascript:;">
-                                        <!-- 不受控制的地方 -->
-                                        <img :src="img['imageUrl']" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="theme">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <a href="javascript:;">
-                                        <img src="images/jiangxuan_2.jpg" alt="">
+                                <div class="col-md-3" v-for="(img,index) in hot_img">
+                                    <a href="javascript:;" v-if="index<=3">
+                                        <!-- 不受控制的地方 -->
+                                        <img :src="img['imageUrl']" alt="" class="mid-hot-img">
                                         <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="javascript:;">
-                                        <img src="images/jiangxuan_2.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="javascript:;">
-                                        <img src="images/jiangxuan_2.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-md-3">
-                                    <a href="javascript:;">
-                                        <img src="images/jiangxuan_2.jpg" alt="">
-                                        <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
+                                            <h3>{{img['name']}}</h3>
+                                            <div class="price">
+                                                网付价<em>￥</em><strong>{{img['originalCost']}}</strong><em>起</em>
+                                                <em style="margin-left: 100px;">{{img['location']}}</em><em
+                                                    style="color:red; margin-left: 15px;">{{img['type']}}</em></div>
                                         </div>
                                     </a>
                                 </div>
@@ -167,7 +137,7 @@
                         <span>国内游</span>
                     </div>
                     <div class="jx_tit" style="float:right" align="right">
-                        <span>更多</span>
+                        <a href="favoriterank.html">更多</a>
                     </div>
                 </div>
                 <div class="heima_gn">
@@ -176,12 +146,15 @@
                     </div>
                     <div class="guone_r">
                         <div class="row">
-                            <div class="col-md-4">
-                                <a href="route_detail.html">
-                                    <img src="images/jiangxuan_4.jpg" alt="">
+                            <div class="col-md-4" v-for="(img,index) in all_img" style="margin-top: 4px;">
+                                <a href="route_detail.html" style="height: 260px;">
+                                    <img :src="img['imageUrl']" alt="" class="mid-all-img">
                                     <div class="has_border">
-                                        <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                        <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
+                                        <h3>{{img['name']}}</h3>
+                                        <div class="price">网付价<em>￥</em><strong>{{img['originalCost']}}</strong><em>起</em>
+                                            <em style="margin-left: 60px;">{{img['location']}}</em>
+                                            <em style="color:red; margin-left: 10px;">{{img['type']}}</em>
+                                        </div>
                                     </div>
                                 </a>
                             </div>
@@ -198,17 +171,29 @@
             vm = new Vue({
                 el: ".mainbody",
                 data: {
-                    hot_img: [],
+                    hot_img: [],//热门项目
+                    all_img: [],//所有项目
                 },
                 methods: {
 
                 },
                 created: function () {
                     let self = this;
+                    //获取热门项目
                     axios.get('http://tripdemo.12138.site//items/hot', {       // 还可以直接把参数拼接在url后边
                         params: {}
                     }).then(function (res) {
                         self.hot_img = res.data.data;
+                        console.log(self.hot_img);
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                    // 获取所有项目
+                    axios.get('http://tripdemo.12138.site//items', {       // 还可以直接把参数拼接在url后边
+                        params: {}
+                    }).then(function (res) {
+                        self.all_img = res.data.data;
+                        console.log(self.all_img);
                     }).catch(function (error) {
                         console.log(error);
                     });
