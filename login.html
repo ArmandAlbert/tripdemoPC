@@ -41,7 +41,6 @@
                 </div>
                 <div class="login_inner">
                     <!--登录错误提示消息-->
-                    <div v-if="showmsg" id="errorMsg" class="alert alert-danger">{{msg}}</div>
                     <form id="loginForm" action="" method="post" accept-charset="utf-8">
                         <input type="hidden" name="action" value="login" />
                         <input name="username" type="text" placeholder="请输入账号" autocomplete="off" v-model="username">
@@ -73,20 +72,23 @@
         data: {
             username: '',
             password: '',
-            showmsg: false,
-            msg: ''
+            showmsg: false
         },
         created() {
             if (localStorage.getItem("username") != null) {
                 this.showmsg = true;
-                this.msg = "您已登录，请勿重复登录";
+                this.showMsg("您已登录，请勿重复登录");
+                window.location.href="index.html";
             }
         },
         methods: {
+            showMsg:function(msg){
+                alert(msg);
+            },
             startLogin: function () {
                 this.showmsg = true;
-                if (localStorage.getItem("")) {
-                    this.msg = "请勿重复登录";
+                if (localStorage.getItem("username")) {
+                    this.showMsg("请勿重复登录");
                     return;
                 }
                 this.userLogin();
@@ -103,12 +105,11 @@
                     .then(function (response) {
                         console.log(response.data);
                         if (response.data.data === "") {
-                            _this.msg = "账户登录失败";
+                            _this.showMsg(response.data.mes);
                             console.log("登陆失败");
                         } else {
                             localStorage.setItem("userId", response.data.data.id);
                             localStorage.setItem("token", response.data.data.token);
-                            _this.msg = "登录成功,1秒后自动跳转...";
                             console.log(response.data.data.id);
                             axios
                                 .get(window.domain + '/users/' + response.data.data.id)
@@ -116,7 +117,7 @@
                                     console.log(response);
                                     // _this.username = response.data.data.username;
                                     localStorage.setItem("username", response.data.data.username);
-                                    window.setTimeout("window.location='index.html'", 1200);
+                                    window.setTimeout("window.location='index.html'", 100);
                                 })
                                 .catch(function (error) {
                                     console.log(error);

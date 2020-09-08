@@ -62,7 +62,7 @@
 								<label for="password">密码:</label>
 							</td>
 							<td class="td_right">
-								<input type="text" v-model="password" id="password" name="password" placeholder="请输入密码">
+								<input type="password" v-model="password" id="password" name="password" placeholder="请输入密码">
 							</td>
 						</tr>
 						<tr>
@@ -166,11 +166,11 @@
 					})
 					.then(function (response) {
 						console.log(response);
-						if (!res.data.mes) {
-							showMsg("验证码发送成功")
+						if (!response.data.mes) {
+							self.showMsg("验证码发送成功")
 							self.setCodeTime()
 						} else {
-							self.showMsg("验证码发送失败，请检查邮箱")
+							self.showMsg(response.data.mes)
 						}
 					})
 					.catch(function (error) {
@@ -191,8 +191,7 @@
 					.then(function (response) {
 						console.log(response.data);
 						if (!response.data.mes) {
-							self.showMsg("注册成功")
-							window.setTimeout("window.location='login.html'", 2000);
+							window.setTimeout("window.location='login.html'", 100);
 						} else {
 							self.showMsg(response.data.mes);
 						}
