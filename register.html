@@ -1,117 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>注册</title>
-        <link rel="stylesheet" type="text/css" href="css/common.css">
-        <link rel="stylesheet" href="css/register.css">
-		<!--导入jquery-->
-		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+
+<head>
+	<meta charset="utf-8">
+	<title>注册</title>
+	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" href="css/register.css">
+	<!--导入jquery-->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="js/jquery-3.3.1.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
-		<!--导入布局js，共享header和footer-->
-		<script src="js/common.js"></script>
-        <script type="text/javascript" src="js/include.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-		<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-		<script>
-        $("#header").load("header.html");
-        $("#footer").load("footer.html");
-    </script>
-    </head>
-	<body>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery-3.3.1.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
+	<!--导入布局js，共享header和footer-->
+	<script src="js/common.js"></script>
+	<script type="text/javascript" src="js/include.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+	<script>
+		$("#header").load("header.html");
+		$("#footer").load("footer.html");
+	</script>
+</head>
+
+<body>
 	<!--引入头部-->
-	<div id="header"><!-- 头部 start --> </div>
-		<!-- 头部 end -->
-    	<div id="app" class="rg_layout">
-    		<div class="rg_form clearfix">
-    			<div class="rg_form_left">
-    				<p>新用户注册</p>
-					<p>USER REGISTER</p>
-					<p>{{msg}}</p>
-    			</div>
-    			<div class="rg_form_center">
-					
-					<!--注册表单-->
-    				<form id="registerForm">
-						<!--提交处理请求的标识符-->
-						<input type="hidden" name="action" value="register">
-    					<table style="margin-top: 25px;">
-    						<tr>
-    							<td class="td_left">
-    								<label for="username">用户名</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="text" v-model="username" id="username" name="username" placeholder="请输入账号">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="password">密码</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="text" v-model="password"id="password" name="password" placeholder="请输入密码">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="email">Email</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="text" v-model="email"id="email" name="email" placeholder="请输入Email">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="name">姓名</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="text" id="name" name="name" placeholder="请输入真实姓名">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="telephone">手机号</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="text" v-model="phoneData" id="telephone" name="telephone" placeholder="请输入您的手机号">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="sex">性别</label>
-    							</td>
-    							<td class="td_right gender">
-    								<input type="radio" id="sex" name="sex" value="男" checked> 男
-    								<input type="radio" name="sex" value="女"> 女
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="birthday">出生日期</label>
-    							</td>
-    							<td class="td_right">
-    								<input type="date" id="birthday" name="birthday" placeholder="年/月/日">
-    							</td>
-    						</tr>
-    						<tr>
-    							<td class="td_left">
-    								<label for="check">验证码</label>
-								</td>
-								<td class="td_right check">
-									<input type="text" id="check" name="check" class="check" v-model="code" >
-								</td>
-								<td>
-									<input type="button" v-model="sendCode" @click="sendMsg"/>
-								</td>
-    							<!--<td class="td_right check">
+	<div id="header">
+		<!-- 头部 start -->
+	</div>
+	<!-- 头部 end -->
+	<div id="app" class="rg_layout">
+		<div class="rg_form clearfix">
+			<div class="rg_form_left">
+				<p>新用户注册</p>
+				<p>USER REGISTER</p>
+				<p>{{msg}}</p>
+			</div>
+			<div class="rg_form_center">
+
+				<!--注册表单-->
+				<form id="registerForm">
+					<!--提交处理请求的标识符-->
+					<input type="hidden" name="action" value="register">
+					<table style="margin-top: 25px;">
+						<tr>
+							<td class="td_left">
+								<label for="username">用户名:</label>
+							</td>
+							<td class="td_right">
+								<input type="text" v-model="username" id="username" name="username" placeholder="请输入账号">
+							</td>
+						</tr>
+						<tr>
+							<td class="td_left">
+								<label for="password">密码:</label>
+							</td>
+							<td class="td_right">
+								<input type="text" v-model="password" id="password" name="password" placeholder="请输入密码">
+							</td>
+						</tr>
+						<tr>
+							<td class="td_left">
+								<label for="email">Email:</label>
+							</td>
+							<td class="td_right">
+								<input type="text" v-model="email" id="email" name="email" placeholder="请输入Email">
+							</td>
+						</tr>
+						<tr>
+							<td class="td_left">
+								<label for="telephone">手机号:</label>
+							</td>
+							<td class="td_right">
+								<input type="text" v-model="phoneData" id="telephone" name="telephone"
+									placeholder="请输入您的手机号">
+							</td>
+						</tr>
+						<tr>
+							<td class="td_left">
+								<label for="check">验证码:</label>
+							</td>
+							<td class="td_right check">
+								<input type="text" id="check" name="check" class="check" v-model="code">
+							</td>
+							<td>
+								<input type="button" v-model="sendCode" @click="sendMsg" style="cursor: pointer;" />
+							</td>
+							<!--<td class="td_right check">
     								<input type="text" id="check" name="check" class="check">
     								<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">
 									<script type="text/javascript">
@@ -121,54 +101,56 @@
                                         }
 									</script>
     							</td>-->
-    						</tr>
-    						<tr>
-    							<td class="td_left"> 
-    							</td>
-    							<td class="td_right check"> 
-    								<input type="button" class="submit" value="注册" @click="startRegister">
-									<span id="msg" style="color: red;"></span>
-    							</td>
-    						</tr>
-    					</table>
-    				</form>
-    			</div>
-    			<div class="rg_form_right">
-    				<p>
-    					已有账号？
-    					<a href="login.html">立即登录</a>
-    				</p>
-    			</div>
-    		</div>
+						</tr>
+						<tr>
+							<td class="td_left">
+							</td>
+							<td class="td_right check">
+								<input type="button" class="submit" value="注册" @click="startRegister">
+								<span id="msg" style="color: red;"></span>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div class="rg_form_right">
+				<p>
+					已有账号？
+					<a href="login.html">立即登录</a>
+				</p>
+			</div>
 		</div>
-        <!--引入尾部-->
-    	<div id="footer"> <!-- 尾部 start--></div>
-		<!--导入布局js，共享header和footer-->
-		
-	</body>
-	<script>
-		//var _this;
-		let vm = new Vue({
-			el:"#app",
-			data:{
-				username:'',
-				password:'',
-				email:'',
-				phoneData:'',
-				code:'',
-				sendCode: "获取验证码",
-				codeTime: 60,
-				msg:''
-			},
+	</div>
+	<!--引入尾部-->
+	<div id="footer">
+		<!-- 尾部 start-->
+	</div>
+	<!--导入布局js，共享header和footer-->
+
+</body>
+<script>
+	//var _this;
+	let vm = new Vue({
+		el: "#app",
+		data: {
+			username: '',
+			password: '',
+			email: '',
+			phoneData: '',
+			code: '',
+			sendCode: "获取验证码",
+			codeTime: 60,
+			msg: ''
+		},
 		mounted() {
 			//_this = this;
 		},
 		methods: {
-			showMsg:function(title){
-					this.msg = title;
-					return;
+			showMsg: function (title) {
+				this.msg = title;
+				return;
 			},
-			setCodeTime:function() {
+			setCodeTime: function () {
 				if (!this.codeTime) {
 					this.sendCode = "获取验证码"
 					this.codeTime = 60
@@ -178,7 +160,7 @@
 					setTimeout(this.setCodeTime, 1000);
 				}
 			},
-			sendMsg:function() {
+			sendMsg: function () {
 				let self = this;
 				if (this.sendCode != "获取验证码") {
 					return;
@@ -187,54 +169,55 @@
 					self.showMsg("请输入邮箱")
 					return;
 				}
-				
+
 				axios
-					.get(window.domain+'/users/code',{params:
-						{email: self.email}
+					.get(window.domain + '/users/code', {
+						params:
+							{ email: self.email }
 					})
-                    .then(function (response) {
-                        console.log(response);
-                        if (!res.data.mes) {
-						showMsg("验证码发送成功")
+					.then(function (response) {
+						console.log(response);
+						if (!res.data.mes) {
+							showMsg("验证码发送成功")
 							self.setCodeTime()
 						} else {
 							self.showMsg("验证码发送失败，请检查邮箱")
 						}
-                        })
-                        .catch(function (error){
-                            console.log(error);
-                    })
+					})
+					.catch(function (error) {
+						console.log(error);
+					})
 			},
-			toRegister:function() {
+			toRegister: function () {
 				let self = this;
 				console.log("开始登陆");
-                let params = new URLSearchParams();
-                params.append('username',self.username);
-				params.append('password',self.password);
-				params.append('email',self.email);
-				params.append('phoneNumber',self.phoneData);
-				params.append('verCode',self.code);				
+				let params = new URLSearchParams();
+				params.append('username', self.username);
+				params.append('password', self.password);
+				params.append('email', self.email);
+				params.append('phoneNumber', self.phoneData);
+				params.append('verCode', self.code);
 				axios
-                    .post(window.domain+'/users/',params)
-                    .then(function (response) {
-                        console.log(response.data);
-                        if (!response.data.mes) {
+					.post(window.domain + '/users/', params)
+					.then(function (response) {
+						console.log(response.data);
+						if (!response.data.mes) {
 							self.showMsg("注册成功")
-							window.setTimeout("window.location='login.html'",2000);
+							window.setTimeout("window.location='login.html'", 2000);
 						} else {
 							self.showMsg(response.data.mes);
-						}                     
-                    })
-                    .catch(function (error) { // 请求失败处理
-                        console.log(error);
-                        console.log(params);
-                        //跳转到错误页面
-                        //window.location.href="error.html?msg="登录出错";
-                        //console.log(_this.username+" "+_this.password);
-                    });
+						}
+					})
+					.catch(function (error) { // 请求失败处理
+						console.log(error);
+						console.log(params);
+						//跳转到错误页面
+						//window.location.href="error.html?msg="登录出错";
+						//console.log(_this.username+" "+_this.password);
+					});
 			},
 
-			startRegister:function() {
+			startRegister: function () {
 				if (!this.email) {
 					this.showMsg("请输入邮箱");
 					return;
@@ -267,5 +250,6 @@
 			}
 		}
 	})
-	</script>	
+</script>
+
 </html>
