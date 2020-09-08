@@ -79,10 +79,6 @@
                                 </div>
                             </li>
                         </ul>
-                        <div class="page_num_inf">
-                            <i></i> 共
-                            <span>12</span>页<span>132</span>条
-                        </div>
                         <div class="pageNum">
                             <ul>
                                 <li><a href="">首页</a></li>
@@ -107,12 +103,12 @@
                             <div class="hot">HOT</div>
                             <span>热门推荐</span>
                         </div>
-                        <ul>
-                            <li>
-                                <div class="left"><img src="images/04-search_09.jpg" alt=""></div>
+                        <ul v-for="(item,index) in hot_img">
+                            <li style="margin-bottom: 20px;margin-top: 15px;">
+                                <div class="left"><img :src="item['imageUrl']" alt=""></div>
                                 <div class="right">
-                                    <p>清远新银盏温泉度假村酒店/自由行套...</p>
-                                    <p>网付价<span>&yen;<span>899</span>起</span>
+                                    <p>{{item['name']}}</p>
+                                    <p><span>&yen;<span>{{item['originalCost']}}</span>起</span>
                                     </p>
                                 </div>
                             </li>
@@ -132,10 +128,21 @@
         el: "#app",
         data: {
             all_img_header: "",
+            hot_img: [],//热门项目
         },
         created: function () {
+            let self = this;
             this.all_img_header = JSON.parse(window.localStorage.getItem("all_img_header"));
             console.log(this.all_img_header);
+            //获取热门项目
+            axios.get('http://tripdemo.12138.site//items/hot', {       // 还可以直接把参数拼接在url后边
+                params: {}
+            }).then(function (res) {
+                self.hot_img = res.data.data;
+                console.log(self.hot_img);
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         methods: {
             gotoDetail: function (index) {
