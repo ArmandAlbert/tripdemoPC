@@ -30,10 +30,10 @@
 
 <body>
     <style>
-        img {
+        /* img {
             width: 284px;
             height: 166px;
-        }
+        } */
     </style>
     <script>
         $("#header").load("header.html");
@@ -105,6 +105,7 @@
                             <div class="row" v-for="(img,index) in hot_img">
                                 <div class="col-md-3">
                                     <a href="javascript:;">
+                                        <!-- 不受控制的地方 -->
                                         <img :src="img['imageUrl']" alt="">
                                         <div class="has_border">
                                             <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
