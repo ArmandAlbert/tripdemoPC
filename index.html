@@ -111,7 +111,7 @@
                         <div role="tabpanel" class="tab-pane active" id="popularity">
                             <div class="row">
                                 <div class="col-md-3" v-for="(img,index) in hot_img">
-                                    <a href="javascript:;" v-if="index<=3">
+                                    <button @click="gotoHotDetail(index)" v-if="index<=3">
                                         <!-- 不受控制的地方 -->
                                         <img :src="img['imageUrl']" alt="" class="mid-hot-img">
                                         <div class="has_border">
@@ -121,7 +121,7 @@
                                                 <em style="margin-left: 100px;">{{img['location']}}</em><em
                                                     style="color:red; margin-left: 15px;">{{img['type']}}</em></div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -147,16 +147,17 @@
                     <div class="guone_r">
                         <div class="row">
                             <div class="col-md-4" v-for="(img,index) in all_img" style="margin-top: 4px;">
-                                <a href="route_detail.html" style="height: 260px;">
+                                <button style="height: 260px;" @click="gotoDetail(index)">
                                     <img :src="img['imageUrl']" alt="" class="mid-all-img">
                                     <div class="has_border">
                                         <h3>{{img['name']}}</h3>
-                                        <div class="price">网付价<em>￥</em><strong>{{img['originalCost']}}</strong><em>起</em>
+                                        <div class="price">
+                                            网付价<em>￥</em><strong>{{img['originalCost']}}</strong><em>起</em>
                                             <em style="margin-left: 60px;">{{img['location']}}</em>
                                             <em style="color:red; margin-left: 10px;">{{img['type']}}</em>
                                         </div>
                                     </div>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -175,7 +176,18 @@
                     all_img: [],//所有项目
                 },
                 methods: {
-
+                    gotoDetail(index) {
+                        window.localStorage.setItem("all_img_header", JSON.stringify(this.all_img));
+                        window.localStorage.setItem("order_index", index);
+                        // console.log(window.localStorage.getItem("all_img_header"));
+                        window.location.href = "route_detail.html";
+                    },
+                    gotoHotDetail(index) {
+                        window.localStorage.setItem("all_img_header", JSON.stringify(this.hot_img));
+                        window.localStorage.setItem("order_index", index);
+                        // console.log(window.localStorage.getItem("all_img_header"));
+                        window.location.href = "route_detail.html";
+                    }
                 },
                 created: function () {
                     let self = this;
