@@ -24,7 +24,7 @@
                     <a href="/"><img src="images/logo.jpg" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" placeholder="请输入路线名称" v-model="search_keyword" class="search_input"
+                    <input name="" type="text" @keydown="keydownDel" placeholder="请输入路线名称" v-model="search_keyword" class="search_input"
                         autocomplete="off">
                     <button class="search-button" @click="search_all_imgs" style="cursor: pointer;">搜索</button>
                 </div>
@@ -76,6 +76,14 @@
             }
         },
         methods: {
+            // 处理键盘事件
+            keydownDel: function(event){
+                // 判断是否按下回车
+                if (event.key == "Enter"){
+                    // 按下Enter即搜索
+                    this.search_all_imgs()
+                }
+            },
             //搜索当前项目
             search_all_imgs: function () {
                 //搜索当前项目
