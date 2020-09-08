@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<title>注册</title>
 	<link rel="stylesheet" type="text/css" href="css/common.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/register.css">
 	<!--导入jquery-->
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -85,29 +86,18 @@
 							<td class="td_left">
 								<label for="check">验证码:</label>
 							</td>
-							<td class="td_right check">
-								<input type="text" id="check" name="check" class="check" v-model="code">
+							<td class="td_right">
+								<input type="text" id="check" placeholder="请输入验证码" name="check" class="codeInput" v-model="code">
+								<!-- <input type="button" class="senCode" v-model="sendCode" @click="sendMsg" /> -->
 							</td>
-							<td>
-								<input type="button" v-model="sendCode" @click="sendMsg" style="cursor: pointer;" />
-							</td>
-							<!--<td class="td_right check">
-    								<input type="text" id="check" name="check" class="check">
-    								<img src="checkCode" height="32px" alt="" onclick="changeCheckCode(this)">
-									<script type="text/javascript">
-										//图片点击事件
-										function changeCheckCode(img) {
-											img.src="checkCode?"+new Date().getTime();
-                                        }
-									</script>
-    							</td>-->
 						</tr>
+						<tr></tr>
 						<tr>
 							<td class="td_left">
-							</td>
-							<td class="td_right check">
 								<input type="button" class="submit" value="注册" @click="startRegister">
-								<span id="msg" style="color: red;"></span>
+							</td>
+							<td class="td_right" style="text-align: center;">
+								<span class="sendCode" @click="sendMsg">{{sendCode}}</span>
 							</td>
 						</tr>
 					</table>
@@ -147,8 +137,7 @@
 		},
 		methods: {
 			showMsg: function (title) {
-				this.msg = title;
-				return;
+				alert(title)
 			},
 			setCodeTime: function () {
 				if (!this.codeTime) {

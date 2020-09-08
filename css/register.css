@@ -5,6 +5,9 @@
 	background-size: 100% 780px;
 	overflow: hidden;
 }
+.sendCode{
+
+}
 .rg_layout .rg_form{
 	width: 886px;
 	height: 534px;
@@ -75,12 +78,18 @@
 	padding-left: 36px;
 	box-sizing: border-box;
 }
+.sendCode{
+	margin-left: 30px;
+	color: #00f;
+	cursor: pointer;
+	text-align: center;
+}
 .rg_form > .rg_form_center .td_right > .check{
 	width: 118px;
 	float: left;
 	margin-right:14px;
 }
-.rg_form > .rg_form_center .td_right > .submit{
+.submit{
 	width: 120px;
 	height: 36px;
 	line-height: 36px;
