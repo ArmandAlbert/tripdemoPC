@@ -40,12 +40,11 @@
 			<div class="rg_form_left">
 				<p>新用户注册</p>
 				<p>USER REGISTER</p>
-				<p>{{msg}}</p>
 			</div>
 			<div class="rg_form_center">
 
 				<!--注册表单-->
-				<form id="registerForm">
+				<form id="registerForm" @keydown="keydownDel">
 					<!--提交处理请求的标识符-->
 					<input type="hidden" name="action" value="register">
 					<table style="margin-top: 25px;">
@@ -87,7 +86,7 @@
 								<label for="check">验证码:</label>
 							</td>
 							<td class="td_right">
-								<input type="text" id="check" placeholder="请输入验证码" name="check" class="codeInput" v-model="code">
+								<input type="text"  id="check" placeholder="请输入验证码" name="check" class="codeInput" v-model="code">
 								<!-- <input type="button" class="senCode" v-model="sendCode" @click="sendMsg" /> -->
 							</td>
 						</tr>
@@ -97,7 +96,7 @@
 								<input type="button" class="submit" value="注册" @click="startRegister">
 							</td>
 							<td class="td_right" style="text-align: center;">
-								<span class="sendCode" @click="sendMsg">{{sendCode}}</span>
+								<input type="button" class="submit" @click="sendMsg" :value=sendCode>
 							</td>
 						</tr>
 					</table>
@@ -136,6 +135,14 @@
 			//_this = this;
 		},
 		methods: {
+			// 处理键盘事件
+            keydownDel: function(event){
+                // 判断是否按下回车
+                if (event.key == "Enter"){
+                    // 按下Enter即登录
+                    this.startRegister()
+                }
+            },
 			showMsg: function (title) {
 				alert(title)
 			},

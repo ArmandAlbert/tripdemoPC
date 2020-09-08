@@ -41,17 +41,17 @@
                 </div>
                 <div class="login_inner">
                     <!--登录错误提示消息-->
-                    <form id="loginForm" action="" method="post" accept-charset="utf-8">
+                    <form id="loginForm" action="" @keydown="keydownDel" method="post" accept-charset="utf-8">
                         <input type="hidden" name="action" value="login" />
                         <input style="cursor: text;" name="username" type="text" placeholder="请输入邮箱/手机号/用户名" autocomplete="off" v-model="username">
-                        <input style="cursor: text;" name="password" type="password" placeholder="请输入密码" autocomplete="off"
+                        <input style="cursor: text;"  name="password" type="password" placeholder="请输入密码" autocomplete="off"
                             v-model="password">
                         <div class="submit_btn">
                             <input class="title" type="button" value="登录" @click="startLogin">
                             <!--<button class="title"  @click="userLogin">登录</button>-->
                         </div>
                     </form>
-                    <div class="reg">没有账户？<a href="register.html">立即注册</a></div>
+                    <div class="reg"><a class="abox" href="register.html">立即注册</a><a href="forget.html">找回密码</a></div>
                 </div>
             </div>
         </section>
@@ -71,22 +71,27 @@
         el: "#app",
         data: {
             username: '',
-            password: '',
-            showmsg: false
+            password: ''
         },
         created() {
             if (localStorage.getItem("username") != null) {
-                this.showmsg = true;
                 this.showMsg("您已登录，请勿重复登录");
                 window.location.href="index.html";
             }
         },
         methods: {
+            // 处理键盘事件
+            keydownDel: function(event){
+                // 判断是否按下回车
+                if (event.key == "Enter"){
+                    // 按下Enter即登录
+                    this.startLogin()
+                }
+            },
             showMsg:function(msg){
                 alert(msg);
             },
             startLogin: function () {
-                this.showmsg = true;
                 if (localStorage.getItem("username")) {
                     this.showMsg("请勿重复登录");
                     return;
@@ -115,7 +120,6 @@
                                 .get(window.domain + '/users/' + response.data.data.id)
                                 .then(function (response) {
                                     console.log(response);
-                                    // _this.username = response.data.data.username;
                                     localStorage.setItem("username", response.data.data.username);
                                     window.setTimeout("window.location='index.html'", 100);
                                 })
@@ -139,6 +143,9 @@
 <style>
     .title {
         padding-bottom: 20px;
+    }
+    .abox{
+        padding-right: 20px;
     }
 </style>
 
