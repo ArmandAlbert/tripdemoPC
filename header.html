@@ -1,7 +1,7 @@
 <!-- 头部 start -->
 <div id="header-app">
     <header id="header">
-        
+
         <div class="top_banner">
             <img src="images/top_banner.jpg" alt="">
         </div>
@@ -13,7 +13,7 @@
             </div>
             <!-- 登录状态  -->
             <div class="login" v-if="isLogin">
-                <span>欢迎回来  {{username}}</span>
+                <span>欢迎回来 {{username}}</span>
                 <a href="myfavorite.html" class="collection">我的订单</a>
                 <a class="logout" @click="clearLocal">退出</a>
             </div>
@@ -24,8 +24,9 @@
                     <a href="/"><img src="images/logo.jpg" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                    <a href="javascript:;" class="search-button">搜索</a>
+                    <input name="" type="text" placeholder="请输入路线名称" v-model="search_keyword" class="search_input"
+                        autocomplete="off">
+                    <button class="search-button" @click="search_all_imgs" style="cursor: hand;">搜索</button>
                 </div>
                 <div class="hottel">
                     <div class="hot_pic">
@@ -40,7 +41,7 @@
         </div>
     </header>
     <!-- 头部 end -->
-     <!-- 首页导航 -->
+    <!-- 首页导航 -->
     <div class="navitem">
         <ul class="nav">
             <li class="nav-active"><a href="index.html">首页</a></li>
@@ -59,21 +60,40 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     let mv = new Vue({
-        el:"#header-app",
-        data:{
-            username:'',
-            password:'',
-            loginflag:false,
-            isLogin:false,
+        el: "#header-app",
+        data: {
+            username: '',
+            password: '',
+            loginflag: false,
+            isLogin: false,
+            search_keyword: "",
+            all_img_header: "",
         },
         created() {
-            if(localStorage.getItem("username")!=null){
-                this.username=localStorage.getItem("username");
-                this.isLogin=true;
+            if (localStorage.getItem("username") != null) {
+                this.username = localStorage.getItem("username");
+                this.isLogin = true;
             }
         },
-        methods:{
-            clearLocal:function(){
+        methods: {
+            //搜索当前项目
+            search_all_imgs: function () {
+                //搜索当前项目
+                let self = this;
+                axios.get('http://tripdemo.12138.site/items', {       // 还可以直接把参数拼接在url后边
+                    params: { "name": self.search_keyword }
+                }).then(function (res) {
+                    // console.log(res.data.data);
+                    self.all_img_header = res.data.data;
+                    // console.log(self.all_img_header);
+                    window.localStorage.removeItem("all_img_header");
+                    window.localStorage.setItem("all_img_header", JSON.stringify(self.all_img_header));
+                    window.location.href = "route_list.html";
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            clearLocal: function () {
                 localStorage.clear();
                 window.location.reload();
             }
@@ -81,8 +101,8 @@
     })
 </script>
 <style>
-    .logout{
-        color:aqua;
+    .logout {
+        color: aqua;
         cursor: pointer;
     }
 </style>
