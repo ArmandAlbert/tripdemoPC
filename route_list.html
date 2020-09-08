@@ -74,7 +74,8 @@
                                         <span>299</span>
                                         <span>起</span>
                                     </p>
-                                    <p><a href="route_detail.html">查看详情</a></p>
+                                    <!--是不是要传参进去才能知道点的是哪个item-->
+                                    <p><button @click="gotoDetail(index)">查看详情</button></p>
                                 </div>
                             </li>
                         </ul>
@@ -137,7 +138,10 @@
             console.log(this.all_img_header);
         },
         methods: {
-
+            gotoDetail: function (index) {
+                window.localStorage.setItem("order_index", index);
+                window.location.href = "route_detail.html";
+            }
         }
     })
 </script>
