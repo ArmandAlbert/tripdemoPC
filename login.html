@@ -11,28 +11,27 @@
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!--导入angularJS文件-->
     <script src="js/angular.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <!--导入jquery-->
     <script src="js/jquery-3.3.1.js"></script>
-</head>
-
-<body>
+    <script src="js/common.js"></script>
     <script>
         $("#header").load("header.html");
         $("#footer").load("footer.html");
     </script>
-    <!--引入头部-->
-    <div id="header">
-        <!-- 头部 start -->
+</head>
 
-        <!-- 头部 end -->
-        <!-- 首页导航 -->
-    </div>
-    <!-- 头部 end -->
+<body>
+
+<div id="app">
+<!--引入头部-->
+<div id="header"></div>
     <section id="login_wrap">
         <div class="fullscreen-bg" style="background: url(images/login_bg.png);height: 532px;">
 
@@ -42,26 +41,26 @@
                 <img src="images/login_logo.png" alt="">
                 <span>欢迎登录去哪儿旅游账户</span>
             </div>
-            <div class="login_inner">
-
+            <div  class="login_inner">
                 <!--登录错误提示消息-->
-                <div id="errorMsg" class="alert alert-danger">用户名不存在！</div>
+                <div v-if="loginflag&&!isLogin"id="errorMsg" class="alert alert-danger" >用户名不存在！</div>
+                <div v-if="isLogin"id="errorMsg" class="alert alert-danger" >登陆成功！</div>
                 <form id="loginForm" action="" method="post" accept-charset="utf-8">
-                    <input type="hidden" name="action" value="login" />
-                    <input name="username" type="text" placeholder="请输入账号" autocomplete="off">
-                    <input name="password" type="text" placeholder="请输入密码" autocomplete="off">
+                    <input type="hidden" name="action" value="login"/>
+                    <input name="username" type="text" placeholder="请输入账号" autocomplete="off" v-model="username">
+                    <input name="password" type="password" placeholder="请输入密码" autocomplete="off" v-model="password">
                     <div class="submit_btn">
-                        <button type="submit">登录</button>
+                        <input class="title" type="button"value="登录" @click="userLogin">
+                        <!--<button class="title"  @click="userLogin">登录</button>-->
                     </div>
                 </form>
-                <div class="reg">没有账户？<a href="javascript:;">立即注册</a></div>
+                <div class="reg">没有账户？<a href="register.html">立即注册</a></div>
             </div>
         </div>
     </section>
     <!--引入尾部-->
-    <div id="footer">
-        <!-- 尾部 start-->
-    </div>
+    <div id="footer"></div>
+</div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/jquery-1.11.0.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -70,4 +69,63 @@
     <script type="text/javascript" src="js/include.js"></script>
 </body>
 
+<script>
+    let vm = new Vue({
+        el:"#app",
+        data:{
+            username:'',
+            password:'',
+            loginflag:false,
+            isLogin:false,
+        },
+        methods:{
+            userLogin:function (){
+                //console.log(this.username+" "+this.password);//成功了应该发送申请
+                let _this = this;
+                let params = new URLSearchParams();
+                params.append('identify',this.username);
+                params.append('password',this.password);
+                axios
+                    .post(window.domain+'/users/auth',params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        if(response.data.data===""){
+                            _this.loginflag = true;
+                            _this.isLogin=false;
+                            console.log("登陆失败");
+                        }else{
+                            localStorage.setItem("userId", response.data.data.id);
+                            localStorage.setItem("token", response.data.data.token);
+                            _this.isLogin=true;
+                            console.log(response.data.data.id);
+                            axios
+                                .get(window.domain+'/users/'+response.data.data.id)
+                                .then(function (response) {
+                                    console.log(response);
+                                    _this.username=response.data.data.username;
+                                    localStorage.setItem("username",_this.username);
+                                    window.location.href="index.html";
+                                })
+                                .catch(function (error){
+                                    console.log(error);
+                                })                            
+                        }
+                        //console.log(localStorage.getItem("userId")+ " " + localStorage.getItem("token"));
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                        console.log(params);
+                        //跳转到错误页面
+                        //window.location.href="error.html?msg="登录出错";
+                        //console.log(_this.username+" "+_this.password);
+                    });
+            }
+        }
+    })
+</script>
+<style>
+    .title{
+
+    }
+</style>
 </html>
