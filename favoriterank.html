@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>收藏排行榜</title>
-        <link rel="stylesheet" type="text/css" href="css/common.css">
-        <link rel="stylesheet" type="text/css" href="css/ranking-list.css">
-        <!--导入jquery-->
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
+
+<head>
+    <meta charset="utf-8">
+    <title>收藏排行榜</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/ranking-list.css">
+    <!--导入jquery-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
           <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
           <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-            <script src="js/jquery-3.3.1.js"></script>
-            <!-- Include all compiled plugins (below), or include individual files as needed -->
-            <script src="js/bootstrap.min.js"></script>
-            <!--导入布局js，共享header和footer-->
-            <script type="text/javascript" src="js/include.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-            <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
-            <script>
-            $("#header").load("header.html");
-            $("#footer").load("footer.html");
-        </script>
-        </head>
-    <body>
-        <!--引入头部-->
-    <div id="header"><!-- 头部 start --> </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+
+<body>
+    <script>
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+    </script>
+    <!--引入头部-->
+    <div id="header">
+        <!-- 头部 start -->
+    </div>
     <div id="app">
         <div class="contant">
             <div class="shaixuan">
@@ -70,18 +74,21 @@
             </div>
         </div>
     </div>
-         <!--导入底部-->
-   		 <div id="footer"> <!-- 尾部 start--></div>
-    </body>
-    <script>
+    <!--导入底部-->
+    <div id="footer">
+        <!-- 尾部 start-->
+    </div>
+</body>
+<script>
     let vm = new Vue({
-        el:"#app",
-        data:{
-            
+        el: "#app",
+        data: {
+
         },
-        methods:{
+        methods: {
 
         }
     })
-    </script>
+</script>
+
 </html>
