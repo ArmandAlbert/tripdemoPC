@@ -166,16 +166,7 @@
                 }else{
                     _this.isLogin = true;
                     _this.userId = localStorage.getItem("userId");
-                    axios
-                        .get('http://ftp.12138.site:666/users/'+_this.userId)
-                        .then(function (response) {
-                            console.log(response);
-                            _this.username=response.data.username;
-                            localStorage.setItem("username",_this.username);
-                        })
-                        .catch(function (error){
-                            console.log(error);
-                        })
+                    
                 }
             }
         }

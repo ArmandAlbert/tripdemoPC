@@ -14,8 +14,6 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!--导入angularJS文件-->
-    <script src="js/angular.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <!--导入jquery-->
@@ -38,19 +36,18 @@
         </div>
         <div class="login-box">
             <div class="title">
-                <img src="images/login_logo.png" alt="">
+                <!--<img src="images/login_logo.png" alt="">-->
                 <span>欢迎登录去哪儿旅游账户</span>
             </div>
             <div  class="login_inner">
                 <!--登录错误提示消息-->
-                <div v-if="loginflag&&!isLogin"id="errorMsg" class="alert alert-danger" >用户名不存在！</div>
-                <div v-if="isLogin"id="errorMsg" class="alert alert-danger" >登陆成功！</div>
+                <div v-if="showmsg"id="errorMsg" class="alert alert-danger" >{{msg}}</div>
                 <form id="loginForm" action="" method="post" accept-charset="utf-8">
                     <input type="hidden" name="action" value="login"/>
                     <input name="username" type="text" placeholder="请输入账号" autocomplete="off" v-model="username">
                     <input name="password" type="password" placeholder="请输入密码" autocomplete="off" v-model="password">
                     <div class="submit_btn">
-                        <input class="title" type="button"value="登录" @click="userLogin">
+                        <input class="title" type="button"value="登录" @click="startLogin">
                         <!--<button class="title"  @click="userLogin">登录</button>-->
                     </div>
                 </form>
@@ -75,10 +72,26 @@
         data:{
             username:'',
             password:'',
-            loginflag:false,
-            isLogin:false,
+            showmsg:false,
+            msg:''
+        },
+        created(){
+            if(localStorage.getItem("username")!=null){
+                this.showmsg=true;
+                this.msg="您已登录，请勿重复登录";
+            }
         },
         methods:{
+            startLogin:function(){
+            this.showmsg=true;
+            if(localStorage.getItem(""))
+            {
+                this.msg="请勿重复登录";
+                return;
+            }
+            this.userLogin();
+            },
+
             userLogin:function (){
                 //console.log(this.username+" "+this.password);//成功了应该发送申请
                 let _this = this;
@@ -90,13 +103,12 @@
                     .then(function (response) {
                         console.log(response.data);
                         if(response.data.data===""){
-                            _this.loginflag = true;
-                            _this.isLogin=false;
+                            _this.msg="账户登录失败";
                             console.log("登陆失败");
                         }else{
                             localStorage.setItem("userId", response.data.data.id);
                             localStorage.setItem("token", response.data.data.token);
-                            _this.isLogin=true;
+                            _this.msg="登录成功";
                             console.log(response.data.data.id);
                             axios
                                 .get(window.domain+'/users/'+response.data.data.id)
@@ -104,7 +116,7 @@
                                     console.log(response);
                                     _this.username=response.data.data.username;
                                     localStorage.setItem("username",_this.username);
-                                    window.location.href="index.html";
+                                    window.setTimeout("window.location='index.html'",2000);
                                 })
                                 .catch(function (error){
                                     console.log(error);
@@ -125,7 +137,7 @@
 </script>
 <style>
     .title{
-
+        padding-bottom: 20px;
     }
 </style>
 </html>
