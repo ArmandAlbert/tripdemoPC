@@ -1,31 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>去哪儿网-我的收藏</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="css/common.css">
-        <link rel="stylesheet" href="css/index.css">
-       <style>
-           .tab-content .row>div {
+
+<head>
+    <meta charset="utf-8">
+    <title>去哪儿网-我的收藏</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .tab-content .row>div {
             margin-top: 16px;
-           } 
-           .tab-content {
+        }
+
+        .tab-content {
             margin-bottom: 36px;
-           }
-       </style>
-       <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        }
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="js/jquery-3.3.1.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
-        <!--导入布局js，共享header和footer-->
-        <script type="text/javascript" src="js/include.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/common.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
@@ -34,17 +32,18 @@
         $("#footer").load("footer.html");
     </script>
 </head>
+
 <body>
     <div id="header"></div>
     <div id="app">
-         <!-- 排行榜 start-->
-        <section id="content">            
+        <!-- 排行榜 start-->
+        <section id="content">
             <section class="hemai_jx">
                 <div class="jx_top">
                     <div class="jx_tit">
                         <img src="images/icon_5.jpg" alt="">
                         <span>我的订单</span>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="jx_content">
                     <!-- Tab panes -->
@@ -61,7 +60,7 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                 </div>
             </section>                      

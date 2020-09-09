@@ -55,16 +55,14 @@
                 <div class="pros_price">
                     <p class="price"><strong>￥{{item.currentCost}}</strong><span>起</span></p>
                     <p class="collect">
-                        <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
-                        <a class="btn already" disabled="disabled"><i
-                                class="glyphicon glyphicon-heart-empty"></i>取消收藏</a>
-                        <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>加入订单</a>
-                    </p>
-                    <p class="collect">
-                        <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>付款</a>
-                        <a class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>删除</a>
-                        <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>完成</a>
-                        <span>已收藏901次</span>
+                        <a class="btn" @click="favorit" v-if="!isFavor"><i
+                                class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
+                        <a class="btn already" disabled="false" v-else><i
+                                class="glyphicon glyphicon-heart-empty"></i>已收藏</a>
+                        <a class="btn" @click="addItem" v-if="!isChoose"><i
+                                class="glyphicon glyphicon-heart-empty"></i>加入订单</a>
+                        <a class="btn already" disabled="false" v-else><i
+                                class="glyphicon glyphicon-heart-empty"></i>已添加</a>
                     </p>
                 </div>
             </div>
@@ -157,14 +155,78 @@
         data: {
             item: "",
             all_img_list: "",
+            isFavor: false,
+            isChoose: false,
         },
         created: function () {
+            let self = this;
             let index = window.localStorage.getItem("order_index");
             this.item = JSON.parse(window.localStorage.getItem("all_img_header"))[index];
             console.log(this.item);
+            //获取收藏状态
+            axios.get('http://tripdemo.12138.site/favours', {       // 还可以直接把参数拼接在url后边
+                headers: {
+                    "token": window.localStorage.getItem("token")
+                },
+                params: {},
+            }).then(function (res) {
+                // console.log(window.localStorage.getItem("token"));
+                // console.log(self.item);
+                for (i = 0; i < res.data.data.length; i++) {
+                    if (res.data.data[i]['item'] == self.item['id'] && res.data.data[i]['user'] == window.localStorage.getItem('userId')) {
+                        self.isFavor = true;
+                    }
+                }
+                console.log(self.isFavor);
+                console.log(res.data);
+            }).catch(function (error) {
+                console.log(error);
+            });
         },
         methods: {
-
+            //添加订单
+            addItem: function () {
+                let self = this;
+                $.ajax({
+                    url: "http://tripdemo.12138.site/indents/",
+                    method: "POST",
+                    data: {
+                        itemId: self.item['id'],
+                    },
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    success: (res) => {
+                        console.log(JSON.parse(res))
+                        self.isChoose = true;
+                        alert('添加成功！');
+                    }
+                })
+            },
+            favorit: function () {
+                let self = this;
+                let changedata = {
+                    itemId: self.item['id']
+                }
+                // console.log(window.domain);
+                // console.log(window.localStorage.getItem("token"));
+                //获取收藏状态
+                $.ajax({
+                    url: "http://tripdemo.12138.site/favours/",
+                    method: "POST",
+                    data: {
+                        itemId: self.item['id'],
+                    },
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    success: (res) => {
+                        console.log(JSON.parse(res))
+                        self.isFavor = true;
+                        alert('收藏成功！');
+                    }
+                })
+            }
         }
     })
 </script>
