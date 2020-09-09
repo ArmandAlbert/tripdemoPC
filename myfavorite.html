@@ -90,7 +90,7 @@
                     .then(function (response) {
                         //console.log(response);
                         self.list_orders = response.data.data;
-                        //console.log(self.list_orders);
+                        // console.log(self.list_orders);
                         for (let i = 0; i < self.list_orders.length; i++) {
                             axios.get(window.domain + "/items", { params: { "name": self.list_orders[i].itemInfo } })
                                 .then(function (response) {
@@ -112,7 +112,8 @@
             gotoOrderDetail: function (index) {
                 let self = this;
                 window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
-                // console.log(window.localStorage.getItem("order_info"));
+                window.localStorage.setItem("indentNo", self.list_orders[index]["indentNo"]);
+                // console.log(window.localStorage.getItem("indentNo"));
                 window.location.href = "order_detail.html";
             }
         }

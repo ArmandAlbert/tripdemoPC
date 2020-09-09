@@ -55,14 +55,14 @@
                 <div class="pros_price">
                     <p class="price"><strong>￥{{order.currentCost}}</strong><span>起</span></p>
                     <p class="collect">
-                        <a class="btn" @click="favorit" v-if="!isFavor"><i
-                                class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
+                        <a class="btn" @click="payOrder" v-if="!isPay"><i
+                                class="glyphicon glyphicon-heart-empty"></i>支付</a>
                         <a class="btn already" disabled="false" v-else><i
-                                class="glyphicon glyphicon-heart-empty"></i>已收藏</a>
-                        <a class="btn" @click="addItem" v-if="!isChoose"><i
-                                class="glyphicon glyphicon-heart-empty"></i>加入订单</a>
+                                class="glyphicon glyphicon-heart-empty"></i>已支付</a>
+                        <a class="btn" @click="completeOrder" v-if="!isDone"><i
+                                class="glyphicon glyphicon-heart-empty"></i>完成订单</a>
                         <a class="btn already" disabled="false" v-else><i
-                                class="glyphicon glyphicon-heart-empty"></i>已添加</a>
+                                class="glyphicon glyphicon-heart-empty"></i>已完成</a>
                     </p>
                 </div>
             </div>
@@ -161,48 +161,78 @@
             let self = this;
             self.order = JSON.parse(window.localStorage.getItem("order_info"));
             console.log(self.order);
+            //获取订单状态
+            $.ajax({
+                url: "http://tripdemo.12138.site/indents",
+                method: "GET",
+                data: {},
+                headers: {
+                    token: window.localStorage.getItem("token"),
+                },
+                success: (res) => {
+                    let order_list = JSON.parse(res).data;
+                    console.log(order_list);
+                    for (i = 0; i < order_list.length; i++) {
+                        //更新订单状态
+                        if (order_list[i]['indentNo'] == window.localStorage.getItem("indentNo")) {
+                            if (order_list[i]['indentType'] == 1) {
+                                self.isPay = false;
+                                self.isDone = false;
+                            } else if (order_list[i]['indentType'] == 2) {
+                                self.isPay = true;
+                                self.isDone = false;
+                            } else if (order_list[i]['indentType'] == 3) {
+                                self.isPay = true;
+                                self.isDone = true;
+                            }
+                        }
+                    }
+                }
+            })
         },
         methods: {
-            //添加订单
-            addItem: function () {
+            //支付订单
+            payOrder: function () {
                 let self = this;
                 $.ajax({
-                    url: "http://tripdemo.12138.site/indents/",
-                    method: "POST",
+                    url: "http://tripdemo.12138.site/indents/" + window.localStorage.getItem("indentNo"),
+                    method: "PUT",
                     data: {
-                        itemId: self.item['id'],
+                        // indentNo: window.localStorage.getItem("indentNo"),
+                        type: 2//支付
                     },
                     headers: {
                         token: window.localStorage.getItem("token"),
                     },
                     success: (res) => {
                         console.log(JSON.parse(res))
-                        self.isChoose = true;
-                        alert('添加成功！');
+                        self.isPay = true;
+                        alert('支付成功！');
                     }
                 })
             },
-            favorit: function () {
+            //完成订单
+            completeOrder: function () {
                 let self = this;
-                let changedata = {
-                    itemId: self.item['id']
+                if (self.isPay == false) {
+                    alert("请先支付订单");
+                    return;
                 }
-                // console.log(window.domain);
-                // console.log(window.localStorage.getItem("token"));
                 //获取收藏状态
                 $.ajax({
-                    url: "http://tripdemo.12138.site/favours/",
-                    method: "POST",
+                    url: "http://tripdemo.12138.site/indents/" + window.localStorage.getItem("indentNo"),
+                    method: "PUT",
                     data: {
-                        itemId: self.item['id'],
+                        // indentNo: window.localStorage.getItem("indentNo"),
+                        type: 3//完成
                     },
                     headers: {
                         token: window.localStorage.getItem("token"),
                     },
                     success: (res) => {
                         console.log(JSON.parse(res))
-                        self.isFavor = true;
-                        alert('收藏成功！');
+                        self.isDone = true;
+                        alert('订单已完成！');
                     }
                 })
             }
