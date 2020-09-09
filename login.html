@@ -113,14 +113,14 @@
                             _this.showMsg(response.data.mes);
                             console.log("登陆失败");
                         } else {
-                            localStorage.setItem("userId", response.data.data.id);
-                            localStorage.setItem("token", response.data.data.token);
+                            window.localStorage.setItem("userId", response.data.data.id);
+                            window.localStorage.setItem("token", response.data.data.token);
                             console.log(response.data.data.id);
                             axios
                                 .get(window.domain + '/users/' + response.data.data.id)
                                 .then(function (response) {
                                     console.log(response);
-                                    localStorage.setItem("username", response.data.data.username);
+                                    window.localStorage.setItem("username", response.data.data.username);
                                     window.setTimeout("window.location='index.html'", 100);
                                 })
                                 .catch(function (error) {
