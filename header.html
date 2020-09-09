@@ -26,8 +26,8 @@
                     <a href="/"><img src="images/logo.jpg" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" @keydown="keydownDel" placeholder="请输入路线名称" v-model="search_keyword" class="search_input"
-                        autocomplete="off">
+                    <input name="" type="text" @keydown="keydownDel" placeholder="请输入路线名称" v-model="search_keyword"
+                        class="search_input" autocomplete="off">
                     <button class="search-button" @click="search_all_imgs" style="cursor: pointer;">搜索</button>
                 </div>
                 <div class="hottel">
@@ -80,9 +80,9 @@
         },
         methods: {
             // 处理键盘事件
-            keydownDel: function(event){
+            keydownDel: function (event) {
                 // 判断是否按下回车
-                if (event.key == "Enter"){
+                if (event.key == "Enter") {
                     // 按下Enter即搜索
                     this.search_all_imgs()
                 }
@@ -91,7 +91,7 @@
             search_all_imgs: function () {
                 //搜索当前项目
                 let self = this;
-                axios.get(window.domain+'/items', {       // 还可以直接把参数拼接在url后边
+                axios.get(window.domain + '/items', {       // 还可以直接把参数拼接在url后边
                     params: { "name": self.search_keyword }
                 }).then(function (res) {
                     // console.log(res.data.data);

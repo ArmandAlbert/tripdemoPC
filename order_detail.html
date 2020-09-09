@@ -236,7 +236,7 @@
                     alert("请先支付订单");
                     return;
                 }
-                //获取收藏状态
+                //获取完成状态
                 $.ajax({
                     url: "http://tripdemo.12138.site/indents/" + window.localStorage.getItem("indentNo"),
                     method: "PUT",

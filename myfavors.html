@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>去哪儿网-我的收藏</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .tab-content .row>div {
+            margin-top: 16px;
+        }
+
+        .tab-content {
+            margin-bottom: 36px;
+        }
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/common.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script>
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+    </script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div id="app">
+        <!-- 排行榜 start-->
+        <section id="content">
+            <section class="hemai_jx">
+                <div class="jx_top">
+                    <div class="jx_tit">
+                        <img src="images/icon_5.jpg" alt="">
+                        <span>我的收藏</span>
+                    </div>
+                </div>
+                <div class="jx_content">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="row">
+                                <div class="col-md-3" v-for="(item,index) in list_orders">
+                                    <button @click="gotoOrderDetail(index)">
+                                        <img :src="item['imageUrl']" alt="" style="height: 180px;">
+                                        <div class="has_border">
+                                            <h3>{{item['itemInfo']}}</h3>
+                                            <div class="price">
+                                                网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em></div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <!-- 排行榜 end-->
+    </div>
+    <!--引入尾部-->
+    <div id="footer">
+        <!-- 尾部 start-->
+    </div>
+</body>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            list_orders: [],
+        },
+        mounted: function () {
+            let self = this;
+            if (!localStorage.getItem("username")) {
+                alert("请登录后再来查看您的订单");
+                window.location.href = "login.html";
+            } else {
+                let self = this;
+                $.ajax({
+                    url: window.domain + "/indents",
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    success: (res) => {
+                        let data = JSON.parse(res);
+                        self.list_orders = data.data;
+                        self.list_orders.forEach((item, index) => {
+                            self.getItemInfo(item['itemInfo'], index)
+                        });
+                    }
+                })
+            }
+        },
+        methods: {
+            gotoOrderDetail: function (index) {
+                let self = this;
+                window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
+                window.localStorage.setItem("indentNo", self.list_orders[index]["indentNo"]);
+                window.location.href = "order_detail.html";
+            },
+            getItemInfo: function (itemName, index) {
+                let self = this;
+                $.ajax({
+                    url: window.domain + "/items",
+                    data: {
+                        name: itemName,
+                    },
+                    success: (res) => {
+                        let data = JSON.parse(res).data[0];
+                        // console.log(data)
+                        let item = self.list_orders[index]
+                        item.originalCost = data.originalCost;
+                        item.imageUrl = data.imageUrl;
+                        Vue.set(this.list_orders, index, item);
+                    }
+                })
+            }
+        }
+    })
+</script>
+
+</html>
