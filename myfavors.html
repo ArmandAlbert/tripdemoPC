@@ -51,10 +51,10 @@
                         <div role="tabpanel" class="tab-pane active" id="home">
                             <div class="row">
                                 <div class="col-md-3" v-for="(item,index) in list_orders">
-                                    <button @click="gotoOrderDetail(index)">
+                                    <button @click="gotoRouteDetail(index)">
                                         <img :src="item['imageUrl']" alt="" style="height: 180px;">
                                         <div class="has_border">
-                                            <h3>{{item['itemInfo']}}</h3>
+                                            <h3>{{item['name']}}</h3>
                                             <div class="price">
                                                 网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em></div>
                                         </div>
@@ -87,57 +87,51 @@
             } else {
                 let self = this;
                 $.ajax({
-                    url: window.domain + "/indents",
+                    url: window.domain + "/favours",
                     headers: {
                         token: window.localStorage.getItem("token"),
                     },
+                    method: "GET",
                     success: (res) => {
+                        // console.log(JSON.parse(res));
                         let data = JSON.parse(res);
                         self.list_orders = data.data;
                         self.list_orders.forEach((item, index) => {
-                            self.getItemInfo(item['itemInfo'], index)
+                            self.getItemInfo(item['item'], index)
                         });
                     }
                 })
             }
         },
         methods: {
-            //搜索当前项目
-            search_all_imgs: function () {
-                //搜索当前项目
+            gotoRouteDetail: function (index) {
                 let self = this;
-                axios.get(window.domain + '/items', {       // 还可以直接把参数拼接在url后边
-                    params: { "name": self.search_keyword }
-                }).then(function (res) {
-                    // console.log(res.data.data);
-                    self.all_img_header = res.data.data;
-                    // console.log(self.all_img_header);
-                    window.localStorage.removeItem("all_img_header");
-                    window.localStorage.setItem("all_img_header", JSON.stringify(self.all_img_header));
-                    window.location.href = "route_list.html";
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                let all_img = [];
+                window.localStorage.setItem("order_index", 0);//设置订单详情
+                all_img.push(self.list_orders[index]);
+                window.localStorage.setItem("all_img_header", JSON.stringify(all_img));
+                console.log(self.list_orders);
+                window.location.href = "route_detail.html";
             },
-            gotoOrderDetail: function (index) {
-                let self = this;
-                window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
-                window.localStorage.setItem("indentNo", self.list_orders[index]["indentNo"]);
-                window.location.href = "order_detail.html";
-            },
-            getItemInfo: function (itemName, index) {
+            // 获取项目信息
+            getItemInfo: function (itemId, index) {
                 let self = this;
                 $.ajax({
-                    url: window.domain + "/items",
+                    url: window.domain + "/items/" + itemId,
                     data: {
-                        name: itemName,
                     },
+                    method: "GET",
                     success: (res) => {
-                        let data = JSON.parse(res).data[0];
+                        // console.log(JSON.parse(res));
+                        let data = JSON.parse(res).data;
                         // console.log(data)
+                        // 使用Vue.set解决修改list_orders不渲染的问题
                         let item = self.list_orders[index]
                         item.originalCost = data.originalCost;
                         item.imageUrl = data.imageUrl;
+                        item.currentCost = data.currentCost;
+                        item.location = data.location;
+                        item.name = data.name
                         Vue.set(this.list_orders, index, item);
                     }
                 })
