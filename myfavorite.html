@@ -27,6 +27,7 @@
         <!--导入布局js，共享header和footer-->
         <script type="text/javascript" src="js/include.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/common.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
     <script>
         $("#header").load("header.html");
@@ -63,24 +64,6 @@
                         </div>                       
                     </div>
                 </div>
-                <div class="pageNum">
-                    <ul>
-                        <li><a href="">首页</a></li>
-                        <li class="threeword"><a href="#">上一页</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">6</a></li>
-                        <li><a href="#">7</a></li>
-                        <li><a href="#">8</a></li>
-                        <li><a href="#">9</a></li>
-                        <li><a href="#">10</a></li>
-                        <li class="threeword"><a href="javascript:;">下一页</a></li>
-                        <li class="threeword"><a href="javascript:;">末页</a></li>
-                    </ul>
-                </div>
             </section>                      
         </section>
         <!-- 排行榜 end-->
@@ -92,7 +75,36 @@
         let vm = new Vue({
             el:"#app",
             data:{
-                
+                list_orders: [],
+                img_urls:[]
+            },
+            created:function(){
+                let self = this;
+                if(!localStorage.getItem("username")){
+                    alert("请登录后再来查看您的订单");
+                    window.location.href = "login.html";
+                }else{
+                    axios.get(window.domain+"/indents",{headers:{"token": window.localStorage.getItem("token")}})
+                    .then(function(response){
+                        //console.log(response);
+                        self.list_orders = response.data.data;
+                        //console.log(self.list_orders);
+                        for(let i=0;i<self.list_orders.length;i++){
+                            axios.get(window.domain+"/items",{params:{ "name": self.list_orders[i].itemInfo }})
+                            .then(function(response){
+                                //console.log(response.data.data[0]);
+                                self.img_urls.push(response.data.data[0]);
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            })
+                        }
+                        console.log(self.img_urls);//测试完成，项目名称与图片一一对应
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })                    
+                }
             },
             methods:{
     
