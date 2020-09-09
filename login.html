@@ -122,6 +122,8 @@
                                 .then(function (response) {
                                     console.log(response);
                                     window.localStorage.setItem("username", response.data.data.username);
+                                    window.localStorage.setItem("userAvatar", response.data.data.avatar);
+                                    // console.log(window.localStorage.getItem("userAvatar"));
                                     window.setTimeout("window.location='index.html'", 100);
                                 })
                                 .catch(function (error) {

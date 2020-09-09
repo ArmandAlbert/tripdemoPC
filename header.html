@@ -14,6 +14,7 @@
             <!-- 登录状态  -->
             <div class="login" v-if="isLogin">
                 <span>欢迎回来, {{username}}</span>
+                <!-- <img :src="avatarUrl" style="border-radius: 50%; height: 40px;"></img> -->
                 <a href="changeinfo.html" class="collection">修改信息</a>
                 <a href="myfavors.html" class="collection">我的收藏</a>
                 <a href="myfavorite.html" class="collection">我的订单</a>
@@ -32,7 +33,7 @@
                 </div>
                 <div class="hottel">
                     <div class="hot_pic">
-                        <img src="images/hot_tel.jpg" alt="">
+                        <img :src="avatarUrl" style="border-radius: 50%; height: 45px;" alt="">
                     </div>
                     <div class="hot_tel">
                         <p class="hot_time">客服热线(24h)</p>
@@ -71,12 +72,16 @@
             isLogin: false,
             search_keyword: "",
             all_img_header: "",
+            avatarUrl: "",
         },
         created() {
+            let self = this;
             if (localStorage.getItem("username") != null) {
                 this.username = localStorage.getItem("username");
                 this.isLogin = true;
-            }
+            };
+            self.avatarUrl = window.domain + window.localStorage.getItem("userAvatar");
+            console.log(self.avatarUrl);
         },
         methods: {
             // 处理键盘事件
