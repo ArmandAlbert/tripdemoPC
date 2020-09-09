@@ -29,31 +29,31 @@
             <a href="/">首页</a>
             <span> &gt;</span>
             <a href="#">国内游</a><span> &gt;</span>
-            <a href="#">{{item['name']}}--订单支付</a>
+            <a href="#">{{order['name']}}--订单支付</a>
         </div>
         <div class="prosum_box">
             <dl class="prosum_left">
                 <dt>
-                    <img alt="" class="big_img" :src="item['imageUrl']">
+                    <img alt="" class="big_img" :src="order['imageUrl']">
                 </dt>
                 <dd>
                     <a class="up_img up_img_disable"></a>
                     <a title="" class="little_img">
-                        <img :src="item['imageUrl']">
+                        <img :src="order['imageUrl']">
                     </a>
                     <a class="down_img down_img_disable" style="margin-bottom: 0;"></a>
                 </dd>
             </dl>
             <div class="prosum_right">
-                <p class="pros_title">{{item['name']}}</p>
+                <p class="pros_title">{{order['name']}}</p>
                 <p class="hot">1-2月出发，网付立享￥1099/2人起！ 爆款位置有限，抢完即止！</p>
                 <div class="pros_other">
                     <p style="font-weight: bolder;">经营商家 ：901梦之队</p>
                     <p>咨询电话 : +86-1008611</p>
-                    <p>地址 : {{item['location']}}</p>
+                    <p>地址 : {{order['location']}}</p>
                 </div>
                 <div class="pros_price">
-                    <p class="price"><strong>￥{{item.currentCost}}</strong><span>起</span></p>
+                    <p class="price"><strong>￥{{order.currentCost}}</strong><span>起</span></p>
                     <p class="collect">
                         <a class="btn" @click="favorit" v-if="!isFavor"><i
                                 class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
@@ -153,13 +153,14 @@
     let vm = new Vue({
         el: "#app",
         data: {
-            item: "",
+            order: "",
             isPay: false,
             isDone: false,
         },
         created: function () {
             let self = this;
-            item = JSON.parse(window.localStorage.getItem(""));
+            self.order = JSON.parse(window.localStorage.getItem("order_info"));
+            console.log(self.order);
         },
         methods: {
             //添加订单
