@@ -51,7 +51,7 @@
             <div class="list clearfix">
                 <ul v-for="(item,index) in hot_img">
                     <li style="cursor: pointer;" @click="gotoHotDetail(index)">
-                        <span class="num one">1</span>
+                        <span class="num one">{{index+1}}</span>
                         <a href="route_detail.html"><img :src="item['imageUrl']" alt=""></a>
                         <h4>{{item['name']}}</h4>
                         <p>
