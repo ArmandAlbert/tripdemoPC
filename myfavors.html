@@ -56,7 +56,9 @@
                                         <div class="has_border">
                                             <h3>{{item['name']}}</h3>
                                             <div class="price">
-                                                网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em></div>
+                                                网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em>
+                                                <em style="margin-left: 40px; color: cadetblue;">取消收藏</em>
+                                            </div>
                                         </div>
                                     </button>
                                 </div>
@@ -93,7 +95,7 @@
                     },
                     method: "GET",
                     success: (res) => {
-                        // console.log(JSON.parse(res));
+                        console.log(JSON.parse(res));
                         let data = JSON.parse(res);
                         self.list_orders = data.data;
                         self.list_orders.forEach((item, index) => {
