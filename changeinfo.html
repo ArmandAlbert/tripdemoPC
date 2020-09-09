@@ -115,7 +115,6 @@
                 axios
                     .get(window.domain + '/users/' + window.localStorage.getItem("userId"))
                     .then(function (response) {
-                        console.log(response);
                         self.username = response.data.data.username;
                         self.email = response.data.data.email;
                         self.phoneData = response.data.data.phoneNumber;
@@ -150,14 +149,15 @@
                 username: self.username,
                 avatar: self.avatar
                 }
-                console.log(changedata);
-                let params = new URLSearchParams();
+                //axios死活没有把token带过去，所以改成用ajax技术
+                /*let params = new URLSearchParams();
 				params.append('id', window.localStorage.getItem("userId"));
                 params.append('email', self.email);
                 params.append('phoneNumber', self.phoneData);
                 params.append('username', self.username);
                 params.append('avatar', self.avatar);               
-                axios.put(window.domain+"/users/",changedata,{
+                axios.put(window.domain+"/users/",changedata,
+                    {
                     "token": window.localStorage.getItem("token")
                     }
                 )
@@ -169,7 +169,27 @@
                     }else{
                         alert("信息修改成功");
                     }
-                })
+                })*/
+                $.ajax({
+				url : window.domain+"/users/",
+				data : JSON.stringify(changedata),
+                type : "PUT",
+                dataType:'json',
+                contentType: 'application/json; charset=UTF-8',
+                headers : {
+                    "token": window.localStorage.getItem("token"),
+
+                },
+				success : function(response){
+                    console.log(response);
+                    if(response.mes){
+                        alert(response.mes);
+                    }else{
+                        alert("信息修改成功");
+                    }
+                }
+			})
+
             }
         }
     })
