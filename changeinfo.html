@@ -186,6 +186,8 @@
                         alert(response.mes);
                     }else{
                         alert("信息修改成功");
+                        window.localStorage.setItem("username",changedata.username);
+                        window.location.href ="index.html";
                     }
                 }
 			})
