@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>去哪儿网-我的收藏</title>
+    <title>去哪儿网-我的订单</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link rel="stylesheet" href="css/index.css">
@@ -50,11 +50,11 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
                             <div class="row">
-                                <div class="col-md-3" v-for="(item,index) in img_urls">
+                                <div class="col-md-3" v-for="(item,index) in list_orders">
                                     <button @click="gotoOrderDetail(index)">
                                         <img :src="item['imageUrl']" alt="" style="height: 180px;">
                                         <div class="has_border">
-                                            <h3>{{item['name']}}</h3>
+                                            <h3>{{item['itemInfo']}}</h3>
                                             <div class="price">
                                                 网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em></div>
                                         </div>
@@ -78,34 +78,27 @@
         el: "#app",
         data: {
             list_orders: [],
-            img_urls: []
         },
-        created: function () {
+        mounted: function () {
             let self = this;
             if (!localStorage.getItem("username")) {
                 alert("请登录后再来查看您的订单");
                 window.location.href = "login.html";
             } else {
-                axios.get(window.domain + "/indents", { headers: { "token": window.localStorage.getItem("token") } })
-                    .then(function (response) {
-                        //console.log(response);
-                        self.list_orders = response.data.data;
-                        // console.log(self.list_orders);
-                        for (let i = 0; i < self.list_orders.length; i++) {
-                            axios.get(window.domain + "/items", { params: { "name": self.list_orders[i].itemInfo } })
-                                .then(function (response) {
-                                    //console.log(response.data.data[0]);
-                                    self.img_urls.push(response.data.data[0]);
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                })
-                        }
-                        console.log(self.img_urls);//测试完成，项目名称与图片一一对应
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
+                let self = this;
+                $.ajax({
+                    url: window.domain + "/indents",
+                    headers:{
+                        token:  window.localStorage.getItem("token"),
+                    },
+                    success: (res)=>{
+                        let data = JSON.parse(res);
+                        self.list_orders = data.data;
+                        self.list_orders.forEach((item, index) => {
+                            self.getItemInfo(item['itemInfo'], index)
+                        });
+                    }
+                })
             }
         },
         methods: {
@@ -113,8 +106,24 @@
                 let self = this;
                 window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
                 window.localStorage.setItem("indentNo", self.list_orders[index]["indentNo"]);
-                // console.log(window.localStorage.getItem("indentNo"));
                 window.location.href = "order_detail.html";
+            },
+            getItemInfo: function(itemName, index){
+                let self = this;
+                $.ajax({
+                    url: window.domain + "/items",
+                    data: {
+                        name: itemName,
+                    },
+                    success: (res)=>{
+                        let data = JSON.parse(res).data[0];
+                        // console.log(data)
+                        let item = self.list_orders[index]
+                        item.originalCost = data.originalCost;
+                        item.imageUrl = data.imageUrl;
+                        Vue.set(this.list_orders, index, item);
+                    }
+                })
             }
         }
     })
