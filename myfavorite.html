@@ -50,64 +50,73 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <a href="route_detail.html">
-                                        <img src="images/collection_pic.jpg" alt="">
+                                <div class="col-md-3" v-for="(item,index) in img_urls">
+                                    <button @click="gotoOrderDetail(index)">
+                                        <img :src="item['imageUrl']" alt="" style="height: 180px;">
                                         <div class="has_border">
-                                            <h3>上海直飞三亚5天4晚自由行(春节预售+亲子/蜜月/休闲游首选+豪华酒店任选+接送机)</h3>
-                                            <div class="price">网付价<em>￥</em><strong>889</strong><em>起</em></div>
+                                            <h3>{{item['name']}}</h3>
+                                            <div class="price">
+                                                网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em></div>
                                         </div>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>                      
+            </section>
         </section>
         <!-- 排行榜 end-->
     </div>
-         <!--引入尾部-->
-    	<div id="footer"> <!-- 尾部 start--></div>
-    </body>
-    <script>
-        let vm = new Vue({
-            el:"#app",
-            data:{
-                list_orders: [],
-                img_urls:[]
-            },
-            created:function(){
-                let self = this;
-                if(!localStorage.getItem("username")){
-                    alert("请登录后再来查看您的订单");
-                    window.location.href = "login.html";
-                }else{
-                    axios.get(window.domain+"/indents",{headers:{"token": window.localStorage.getItem("token")}})
-                    .then(function(response){
+    <!--引入尾部-->
+    <div id="footer">
+        <!-- 尾部 start-->
+    </div>
+</body>
+<script>
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            list_orders: [],
+            img_urls: []
+        },
+        created: function () {
+            let self = this;
+            if (!localStorage.getItem("username")) {
+                alert("请登录后再来查看您的订单");
+                window.location.href = "login.html";
+            } else {
+                axios.get(window.domain + "/indents", { headers: { "token": window.localStorage.getItem("token") } })
+                    .then(function (response) {
                         //console.log(response);
                         self.list_orders = response.data.data;
                         //console.log(self.list_orders);
-                        for(let i=0;i<self.list_orders.length;i++){
-                            axios.get(window.domain+"/items",{params:{ "name": self.list_orders[i].itemInfo }})
-                            .then(function(response){
-                                //console.log(response.data.data[0]);
-                                self.img_urls.push(response.data.data[0]);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            })
+                        for (let i = 0; i < self.list_orders.length; i++) {
+                            axios.get(window.domain + "/items", { params: { "name": self.list_orders[i].itemInfo } })
+                                .then(function (response) {
+                                    //console.log(response.data.data[0]);
+                                    self.img_urls.push(response.data.data[0]);
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
                         }
                         console.log(self.img_urls);//测试完成，项目名称与图片一一对应
                     })
                     .catch(function (error) {
                         console.log(error);
-                    })                    
-                }
-            },
-            methods:{
-    
+                    })
             }
-        })
-        </script>
+        },
+        methods: {
+            gotoOrderDetail: function (index) {
+                let self = this;
+                window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
+                // console.log(window.localStorage.getItem("order_info"));
+                window.location.href = "order_detail.html";
+            }
+        }
+    })
+</script>
+
 </html>
