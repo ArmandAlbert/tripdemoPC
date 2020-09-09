@@ -109,7 +109,7 @@
                 window.location.href = "order_detail.html";
             },
             // 获取项目信息
-            getItemInfo: function(itemName, index){
+            getItemInfo: function (itemName, index) {
                 let self = this;
                 $.ajax({
                     url: window.domain + "/items",
@@ -124,6 +124,7 @@
                         item.originalCost = data.originalCost;
                         item.imageUrl = data.imageUrl;
                         item.currentCost = data.currentCost;
+                        item.location = data.location;
                         Vue.set(this.list_orders, index, item);
                     }
                 })

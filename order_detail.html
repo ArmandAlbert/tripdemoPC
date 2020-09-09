@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>路线详情</title>
+    <title>订单详情</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/common.css">
     <link rel="stylesheet" type="text/css" href="css/route-detail.css">
@@ -29,7 +29,7 @@
             <a href="/">首页</a>
             <span> &gt;</span>
             <a href="#">国内游</a><span> &gt;</span>
-            <a href="#">{{order['name']}}--订单支付</a>
+            <a href="#">{{order['itemInfo']}}--订单支付</a>
         </div>
         <div class="prosum_box">
             <dl class="prosum_left">
@@ -45,7 +45,7 @@
                 </dd>
             </dl>
             <div class="prosum_right">
-                <p class="pros_title">{{order['name']}}</p>
+                <p class="pros_title">{{order['itemInfo']}}</p>
                 <p class="hot">1-2月出发，网付立享￥1099/2人起！ 爆款位置有限，抢完即止！</p>
                 <div class="pros_other">
                     <p style="font-weight: bolder;">经营商家 ：901梦之队</p>
