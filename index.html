@@ -181,12 +181,14 @@
                         window.localStorage.setItem("order_index", index);
                         // console.log(window.localStorage.getItem("all_img_header"));
                         window.location.href = "route_detail.html";
+                        window.localStorage.setItem("path", 1);
                     },
                     gotoHotDetail(index) {
                         window.localStorage.setItem("all_img_header", JSON.stringify(this.hot_img));
                         window.localStorage.setItem("order_index", index);
                         // console.log(window.localStorage.getItem("all_img_header"));
                         window.location.href = "route_detail.html";
+                        window.localStorage.setItem("path", 1);
                     }
                 },
                 created: function () {

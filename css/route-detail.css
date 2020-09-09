@@ -148,6 +148,12 @@
 	font-size: 16px;
 	border-bottom: 3px solid #ffc900;
 }
+.comments{
+    font-size: 16px;
+    border-bottom: 3px solid #ffc900;
+    width: 1188px;
+    margin: 60px auto;
+}
 .notice {
 	border: solid 1px #ddd;
 	padding: 35px 48px;
