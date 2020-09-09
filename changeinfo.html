@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>修改信息</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/register.css">
+    <!--导入jquery-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-3.3.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+    <script src="js/common.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script>
+        $("#header").load("header.html");
+        $("#footer").load("footer.html");
+    </script>
+</head>
+
+<body>
+    <!--引入头部-->
+    <div id="header">
+        <!-- 头部 start -->
+    </div>
+    <!-- 头部 end -->
+    <div id="app" class="rg_layout">
+        <div class="rg_form clearfix">
+            <div class="rg_form_left">
+                <p>信息修改</p>
+                <p>INFORMATION CHANGE</p>
+            </div>
+            <div class="rg_form_center">
+
+                <!--注册表单-->
+                <form id="registerForm" @keydown="keydownDel">
+                    <!--提交处理请求的标识符-->
+                    <input type="hidden" name="action" value="register">
+                    <table style="margin-top: 25px;">
+                        <tr>
+                            <td class="td_left">
+                                <label for="email">邮箱:</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" v-model="email" id="email" name="email" placeholder="请输入Email"
+                                    disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="username">用户名:</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" v-model="username" id="username" name="username" placeholder="请输入账号">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td_left">
+                                <label for="telephone">手机号:</label>
+                            </td>
+                            <td class="td_right">
+                                <input type="text" v-model="phoneData" id="telephone" name="telephone"
+                                    placeholder="请输入您的手机号">
+                            </td>
+                        </tr>
+                        <tr></tr>
+                        <tr>
+                            <td class="td_left">
+                                <input type="button" class="submit" value="修改" @click="change">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="rg_form_right">
+                <p>
+                    忘记密码？
+                    <a href="forget.html">立即修改</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!--引入尾部-->
+    <div id="footer">
+        <!-- 尾部 start-->
+    </div>
+    <!--导入布局js，共享header和footer-->
+
+</body>
+
+<script>
+    //var _this;
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            username: '',
+            email: '',
+            phoneData: '',
+            avatar:''
+        },
+        mounted() {
+            let self = this;
+            if (localStorage.getItem("username") != null) {
+                axios
+                    .get(window.domain + '/users/' + window.localStorage.getItem("userId"))
+                    .then(function (response) {
+                        console.log(response);
+                        self.username = response.data.data.username;
+                        self.email = response.data.data.email;
+                        self.phoneData = response.data.data.phoneNumber;
+                        self.avatar = response.data.data.avatar;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else {
+                alert("您尚未登录，请前往登录");
+                window.location.href = "login.html";
+            }
+        },
+        methods: {
+            // 处理键盘事件
+            keydownDel: function (event) {
+                // 判断是否按下回车
+                if (event.key == "Enter") {
+                    // 按下Enter即登录
+                    this.change()
+                }
+            },
+            showMsg: function (title) {
+                alert(title)
+            },
+            change: function () {
+                let self = this;
+                let changedata = {
+                id: window.localStorage.getItem("userId"),
+                email: self.email,
+                phoneNumber: self.phoneData,
+                username: self.username,
+                avatar: self.avatar
+                }
+                console.log(changedata);
+                let params = new URLSearchParams();
+				params.append('id', window.localStorage.getItem("userId"));
+                params.append('email', self.email);
+                params.append('phoneNumber', self.phoneData);
+                params.append('username', self.username);
+                params.append('avatar', self.avatar);               
+                axios.put(window.domain+"/users/",changedata,{
+                    "token": window.localStorage.getItem("token")
+                    }
+                )
+                .then(function(response){
+                    let data = response.data;
+                    console.log(response);
+                    if(data.mes){
+                        alert(data.mes);
+                    }else{
+                        alert("信息修改成功");
+                    }
+                })
+            }
+        }
+    })
+</script>
+
+</html>
