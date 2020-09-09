@@ -57,7 +57,8 @@
                                             <h3>{{item['name']}}</h3>
                                             <div class="price">
                                                 网付价<em>￥</em><strong>{{item['originalCost']}}</strong><em>起</em>
-                                                <em style="margin-left: 40px; color: cadetblue;">取消收藏</em>
+                                                <em style="margin-left: 40px; color: cadetblue;"
+                                                    @click="deleteFavor(index)">取消收藏</em>
                                             </div>
                                         </div>
                                     </button>
@@ -80,6 +81,8 @@
         el: "#app",
         data: {
             list_orders: [],
+            favorId: -1,
+            favor_list: [],
         },
         mounted: function () {
             let self = this;
@@ -96,6 +99,7 @@
                     method: "GET",
                     success: (res) => {
                         console.log(JSON.parse(res));
+                        self.favor_list = JSON.parse(res).data;
                         let data = JSON.parse(res);
                         self.list_orders = data.data;
                         self.list_orders.forEach((item, index) => {
@@ -106,6 +110,26 @@
             }
         },
         methods: {
+            //取消收藏
+            deleteFavor: function (index) {
+                let self = this;
+                // console.log(self.favor_list[index]);
+                self.favorId = self.favor_list[index]['id'];
+                $.ajax({
+                    url: window.domain + "/favours/" + self.favorId,
+                    data: {
+                    },
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    method: "DELETE",
+                    success: (res) => {
+                        console.log(res);
+                        alert("取消收藏成功！");
+                        window.location.reload();
+                    }
+                })
+            },
             gotoRouteDetail: function (index) {
                 let self = this;
                 let all_img = [];
@@ -113,7 +137,7 @@
                 all_img.push(self.list_orders[index]);
                 window.localStorage.setItem("all_img_header", JSON.stringify(all_img));
                 console.log(self.list_orders);
-                window.location.href = "route_detail.html";
+                // window.location.href = "route_detail.html";
             },
             // 获取项目信息
             getItemInfo: function (itemId, index) {
