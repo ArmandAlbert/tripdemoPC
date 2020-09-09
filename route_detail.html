@@ -173,7 +173,7 @@
                 // console.log(window.localStorage.getItem("token"));
                 // console.log(self.item);
                 for (i = 0; i < res.data.data.length; i++) {
-                    if (res.data.data[i]['item'] == self.item['id'] && res.data.data[i]['user'] == window.localStorage.getItem('userId')) {
+                    if (res.data.data[i]['item'] == self.item['item'] && res.data.data[i]['user'] == window.localStorage.getItem('userId')) {
                         self.isFavor = true;
                     }
                 }
