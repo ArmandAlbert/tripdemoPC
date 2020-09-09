@@ -102,6 +102,23 @@
             }
         },
         methods: {
+            //搜索当前项目
+            search_all_imgs: function () {
+                //搜索当前项目
+                let self = this;
+                axios.get(window.domain + '/items', {       // 还可以直接把参数拼接在url后边
+                    params: { "name": self.search_keyword }
+                }).then(function (res) {
+                    // console.log(res.data.data);
+                    self.all_img_header = res.data.data;
+                    // console.log(self.all_img_header);
+                    window.localStorage.removeItem("all_img_header");
+                    window.localStorage.setItem("all_img_header", JSON.stringify(self.all_img_header));
+                    window.location.href = "route_list.html";
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
             gotoOrderDetail: function (index) {
                 let self = this;
                 window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情

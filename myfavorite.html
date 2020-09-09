@@ -88,10 +88,10 @@
                 let self = this;
                 $.ajax({
                     url: window.domain + "/indents",
-                    headers:{
-                        token:  window.localStorage.getItem("token"),
+                    headers: {
+                        token: window.localStorage.getItem("token"),
                     },
-                    success: (res)=>{
+                    success: (res) => {
                         let data = JSON.parse(res);
                         self.list_orders = data.data;
                         self.list_orders.forEach((item, index) => {
@@ -116,7 +116,7 @@
                     data: {
                         name: itemName,
                     },
-                    success: (res)=>{
+                    success: (res) => {
                         let data = JSON.parse(res).data[0];
                         // console.log(data)
                         // 使用Vue.set解决修改list_orders不渲染的问题
