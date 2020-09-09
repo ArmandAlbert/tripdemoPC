@@ -63,6 +63,7 @@
                                 class="glyphicon glyphicon-heart-empty"></i>完成订单</a>
                         <a class="btn already" disabled="false" v-else><i
                                 class="glyphicon glyphicon-heart-empty"></i>已完成</a>
+                        <a class="btn" @click="deleteOrder" style="height: 38px; background-color: coral;"><i></i>删除</a>
                     </p>
                 </div>
             </div>
@@ -191,6 +192,23 @@
             })
         },
         methods: {
+            //删除订单
+            deleteOrder: function () {
+                let self = this;
+                $.ajax({
+                    url: "http://tripdemo.12138.site/indents/" + window.localStorage.getItem("indentNo"),
+                    method: "DELETE",
+                    data: {},
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    success: (res) => {
+                        console.log(JSON.parse(res))
+                        alert('订单已删除！');
+                        window.location.href = "myfavorite.html";
+                    }
+                })
+            },
             //支付订单
             payOrder: function () {
                 let self = this;
