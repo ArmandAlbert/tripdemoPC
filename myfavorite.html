@@ -104,10 +104,11 @@
         methods: {
             gotoOrderDetail: function (index) {
                 let self = this;
-                window.localStorage.setItem("order_info", JSON.stringify(self.img_urls[index]));//设置订单详情
+                window.localStorage.setItem("order_info", JSON.stringify(self.list_orders[index]));//设置订单详情
                 window.localStorage.setItem("indentNo", self.list_orders[index]["indentNo"]);
                 window.location.href = "order_detail.html";
             },
+            // 获取项目信息
             getItemInfo: function(itemName, index){
                 let self = this;
                 $.ajax({
@@ -118,9 +119,11 @@
                     success: (res)=>{
                         let data = JSON.parse(res).data[0];
                         // console.log(data)
+                        // 使用Vue.set解决修改list_orders不渲染的问题
                         let item = self.list_orders[index]
                         item.originalCost = data.originalCost;
                         item.imageUrl = data.imageUrl;
+                        item.currentCost = data.currentCost;
                         Vue.set(this.list_orders, index, item);
                     }
                 })
