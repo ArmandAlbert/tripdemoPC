@@ -15,10 +15,34 @@
     <script type="text/javascript" src="js/include.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="js/common.js"></script>
     <script>
         $("#header").load("header.html");
         $("#footer").load("footer.html");
     </script>
+    <style>
+        .comment{
+            border-bottom: 1px dashed;
+            padding: 15px;
+        }
+        .comment-body{
+            margin-top: 15px;
+            text-indent: 2em;
+            word-wrap: break-word;
+        }
+        .comment-self{
+            margin: 15px;
+        }
+        .submit-comment{
+            padding: 15px;
+            padding-right: 0px;
+            display: block;
+            text-align: right;
+            color: blue;
+            cursor: pointer;
+            border-bottom: 1px dashed #000 !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -86,11 +110,13 @@
 
         <div class='you_need_konw'>
             <span>用户评论</span>
-            <div class=""></div>
+            <div class="comment-self">
+                <textarea class="form-control" v-model="comment" placeholder="在此输入评论"></textarea>
+                <span class="submit-comment" @click="submitComment">提交评论</span>
+            </div>
             <div class="comment" v-for="(info,index) in commentList">
-                <div>{{info['username']}}</div>
-                <div>{{getLocalTime(info['createTime'])}}</div>
-                <div>{{info['content']}}</div>
+                <div class="comment-header">{{info['username']}} [{{getLocalTime(info['createTime'])}}]：</div>
+                <div class="comment-body">{{info['content']}}</div>
             </div>
         </div>
 
@@ -164,6 +190,7 @@
     let vm = new Vue({
         el: "#app",
         data: {
+            comment: "",
             item: "",
             all_img_list: "",
             isFavor: false,
@@ -280,6 +307,34 @@
                         console.log(JSON.parse(res))
                         self.isFavor = true;
                         alert('收藏成功！');
+                    }
+                })
+            },
+            submitComment: function(){
+                let self = this;
+                if (!self.comment){
+                    alert("评论为空！")
+                    return;
+                }
+                $.ajax({
+                    url: window.domain + "/comments/",
+                    headers: {
+                        token: window.localStorage.getItem("token"),
+                    },
+                    data: {
+                        itemId: self.itemFinal,
+                        content: self.comment
+                    },
+                    method: "POST",
+                    success: (res)=>{
+                        let data = JSON.parse(res)
+                        if (res.mes){
+                            alert(res.mes)
+                        }
+                        else{
+                            alert("添加成功")
+                            window.location.reload()
+                        }
                     }
                 })
             }
